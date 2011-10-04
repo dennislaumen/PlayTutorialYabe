@@ -1,6 +1,13 @@
+# Play!
 yabe/tmp
 yabe/modules
 yabe/lib
 yabe/test-result
 yabe/logs
+
+# Mac OS X
+.DS_Store
+
+# IntelliJ IDEA
+*.iml
 
