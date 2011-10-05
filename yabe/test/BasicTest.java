@@ -49,4 +49,51 @@ public class BasicTest extends UnitTest {
         assertNotNull(firstPost.postedAt);
     }
 
+    @Test
+    public void postComments() {
+        User bob = new User("bob@gmail.com", "secret", "Bob").save();
+
+        Post bobsPost = new Post(bob, "My first post", "Hello world").save();
+
+        new Comment(bobsPost, "Jeff", "Nice post").save();
+        new Comment(bobsPost, "Tom", "I knew that!").save();
+
+        List<Comment> commentsToBobsPost = Comment.find("byPost", bobsPost).fetch();
+
+        assertEquals(2, commentsToBobsPost.size());
+
+        Comment firstComment = commentsToBobsPost.get(0);
+        assertNotNull(firstComment);
+        assertEquals("Jeff", firstComment.author);
+        assertEquals("Nice post", firstComment.content);
+        assertNotNull(firstComment.postedAt);
+    }
+
+    @Test
+    public void useTheCommentsRelation() {
+        User bob = new User("bob@gmail.com", "secret", "Bob").save();
+
+        Post bobPost = new Post(bob, "My first post", "Hello world").save();
+
+        bobPost.addComment("Jeff", "Nice post");
+        bobPost.addComment("Tom", "I knew that !");
+
+        assertEquals(1, User.count());
+        assertEquals(1, Post.count());
+        assertEquals(2, Comment.count());
+
+        bobPost = Post.find("byAuthor", bob).first();
+        assertNotNull(bobPost);
+
+        assertEquals(2, bobPost.comments.size());
+        assertEquals("Jeff", bobPost.comments.get(0).author);
+
+        // Delete the post
+        bobPost.delete();
+
+        // Check that all comments have been deleted
+        assertEquals(1, User.count());
+        assertEquals(0, Post.count());
+        assertEquals(0, Comment.count());
+    }
 }
