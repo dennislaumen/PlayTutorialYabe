@@ -116,7 +116,7 @@ public class BasicTest extends UnitTest {
         List<Post> bobPosts = Post.find("author.email", "bob@gmail.com").fetch();
         assertEquals(2, bobPosts.size());
 
-        // Find all comments related to Bob's posts
+        // Find all comments related to Bob's posts g
         List<Comment> bobComments = Comment.find("post.author.email", "bob@gmail.com").fetch();
 
         assertEquals(3, bobComments.size());
