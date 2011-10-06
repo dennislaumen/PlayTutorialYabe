@@ -9,7 +9,7 @@ public class Bootstrap extends Job {
     @Override
     public void doJob() throws Exception {
         if (User.count() == 0) {
-            Fixtures.loadYaml("initial-data.yml");
+            Fixtures.loadModels("initial-data.yml");
         }
     }
 }
